@@ -92,3 +92,19 @@ void callback(char* topico, byte* carga, unsigned int longitud) {
   }
 }
 
+void reconectar() {
+  while (!cliente.connected()) {
+    Serial.print("Intentando conectar a MQTT...");
+    String idCliente = "ESP8266Client-";
+    idCliente += String(random(0xffff), HEX);
+    if (cliente.connect(idCliente.c_str())) {
+      Serial.println("Conectado");
+      cliente.subscribe("esp32/topico");
+    } else {
+      Serial.print("Fallo, rc=");
+      Serial.print(cliente.state());
+      Serial.println(" intentando de nuevo en 5 segundos");
+      delay(5000);
+    }
+  }
+}

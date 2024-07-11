@@ -51,3 +51,26 @@ void sendMessage(String message){
   http.end();
 }
 
+void configurar_wifi() {
+  delay(10);
+  Serial.println();
+  Serial.print("Conectando a ");
+  Serial.println(ssid);
+
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    digitalWrite(LED_BUILTIN, LOW); // Apaga el LED mientras se conecta
+    delay(500);
+    Serial.print(".");
+  }
+
+  randomSeed(micros());
+
+  Serial.println("");
+  Serial.println("WiFi conectado");
+  Serial.println("Direccion IP: ");
+  Serial.println(WiFi.localIP());
+  digitalWrite(LED_BUILTIN, HIGH); // Enciende el LED cuando está conectado
+}

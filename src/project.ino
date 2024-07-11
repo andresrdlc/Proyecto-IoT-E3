@@ -119,3 +119,60 @@ void setup() {
   cliente.setCallback(callback);
   dht.begin();
 }
+
+void loop() {
+  if (!cliente.connected()) {
+    reconectar();
+  }
+  cliente.loop();
+
+  unsigned long ahora = millis();
+  if (ahora - ultimoMensaje >30000) {
+    ultimoMensaje = ahora;
+
+    float temperatura = dht.readTemperature();
+    float humedad = dht.readHumidity();
+    int valorHumedadSuelo = analogRead(PIN_HUMEDAD_SUELO);
+    int porcentajeHumedadSuelo = map(valorHumedadSuelo, 0, 4095, 120, 0);
+    int valorSensorLluvia = !digitalRead(PIN_SENSOR_LLUVIA);
+    
+
+    // Condiciones para el estado del motor
+    /*if (temperatura > 30 || humedad < 30 || porcentajeHumedadSuelo < 20 || valorSensorLluvia == 1) {
+      estadoMotor = HIGH; // Enciende el motor
+    } else {
+      estadoMotor = LOW; // Apaga el motor
+    }*/
+
+    if(porcentajeHumedadSuelo <= 60){
+      estadoMotor = HIGH;
+    }
+
+    if(porcentajeHumedadSuelo >= 80){
+      estadoMotor = LOW;
+    }
+
+    if (temperatura > 30){
+      sendMessage("Exceso de Temperatura ");
+      delay(5000);
+    }
+
+    if (temperatura < 10){
+      sendMessage("Temperatura Muy Baja ");
+      delay(5000);
+    }
+
+    digitalWrite(PIN_MOTOR, estadoMotor);
+
+    snprintf(mensaje, TAMANO_BUFFER_MENSAJE, "%.2f,%.2f,%d,%d,%d", 
+             temperatura, humedad, porcentajeHumedadSuelo, valorSensorLluvia, estadoMotor);
+    Serial.print("Publicar mensaje: ");
+    Serial.println(mensaje);
+    cliente.publish(topico_salida, mensaje);
+
+     if(valorSensorLluvia == 1){
+      sendMessage("LLUVIA, RIESGO DE HUMEDAD");
+      delay(5000);
+    }
+  }
+}

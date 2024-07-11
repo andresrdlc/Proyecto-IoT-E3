@@ -108,3 +108,14 @@ void reconectar() {
     }
   }
 }
+
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);     
+  pinMode(PIN_MOTOR, OUTPUT);
+  pinMode(PIN_SENSOR_LLUVIA, INPUT);
+  Serial.begin(115200);
+  configurar_wifi();
+  cliente.setServer(servidor_mqtt, 1883);
+  cliente.setCallback(callback);
+  dht.begin();
+}

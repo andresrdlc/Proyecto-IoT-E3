@@ -26,3 +26,7 @@ Este proyecto de IoT se centra en la creación de un sistema automatizado de rie
 - Diodo
 - Bomba de agua
 - Fuente de alimentación de 6V para la bomba
+
+## Elaboración
+![9f47f19f-1907-4700-adee-25870add9030](https://github.com/andresrdlc/Proyecto-IoT-E3/assets/113413391/f0951c38-1b63-4215-9a40-cf9e46326fb4)
+![abd6338f-aeb7-436c-8d4c-7def98a3b3b2](https://github.com/andresrdlc/Proyecto-IoT-E3/assets/113413391/af9be8c4-f030-45c9-8317-ec5b722c28e3)

@@ -74,3 +74,21 @@ void configurar_wifi() {
   Serial.println(WiFi.localIP());
   digitalWrite(LED_BUILTIN, HIGH); // Enciende el LED cuando está conectado
 }
+
+void callback(char* topico, byte* carga, unsigned int longitud) {
+  Serial.print("Mensaje recibido [");
+  Serial.print(topico);
+  Serial.print("] ");
+  for (int i = 0; i < longitud; i++) {
+    Serial.print((char)carga[i]);
+  }
+  Serial.println();
+
+  // Enciende el LED si se recibe '1' como primer carácter
+  if ((char)carga[0] == '1') {
+    digitalWrite(LED_BUILTIN, LOW);   
+  } else {
+    digitalWrite(LED_BUILTIN, HIGH);  
+  }
+}
+
